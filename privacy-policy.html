@@ -190,14 +190,14 @@
       <span class="app-name">Lofi Radio</span>
     </div>
     <h1>Privacy Policy</h1>
-    <p class="meta">Effective date: <time>May 4, 2026</time></p>
+    <p class="meta">Effective date: <time>July 17, 2026</time></p>
   </header>
 
   <div class="callout">
     <strong>The short version</strong>
     Lofi Radio does not collect, transmit, or sell any personal data.
     Everything stays on your device. The only network connection is
-    streaming audio from SoundCloud's official lo-fi playlists, which
+    streaming audio from public playlists on the Audius network, which
     happens whenever you press play.
   </div>
 
@@ -240,6 +240,11 @@
       <td>Lets the player resume the same track after a browser restart</td>
     </tr>
     <tr>
+      <td>Listening history (positions of recently played tracks within the current station, capped at 50 entries)</td>
+      <td><span class="badge badge-local">chrome.storage.local</span></td>
+      <td>Makes the "previous track" button return to tracks you actually heard, even after a restart</td>
+    </tr>
+    <tr>
       <td>Player state (playing / paused, last error)</td>
       <td><span class="badge badge-memory">in-memory</span></td>
       <td>Coordinates the popup, service worker, and audio document during a session</td>
@@ -254,18 +259,24 @@
   </p>
   <ul>
     <li>
-      <strong>Audio streaming</strong> — when you press play, the extension loads
-      the official SoundCloud Widget Player from
-      <code>w.soundcloud.com</code> and streams audio from SoundCloud's CDN
-      (<code>*.sndcdn.com</code>). Your browser connects to SoundCloud's servers
-      as if you visited
-      <a href="https://soundcloud.com/lofi_girl" target="_blank" rel="noopener">soundcloud.com/lofi_girl</a>
-      directly.
+      <strong>Playlist data</strong> — when the player starts or you switch
+      stations, the extension fetches the track lists of curated public playlists
+      from the Audius API (<code>api.audius.co</code>). These requests are
+      anonymous: no account, sign-in, or API key is involved.
     </li>
     <li>
-      <strong>Album artwork and waveforms</strong> — when displaying the currently
-      playing track, the extension fetches the cover image and waveform data from
-      SoundCloud's CDN.
+      <strong>Audio streaming</strong> — when you press play, audio is streamed
+      from the Audius network. The stream request goes to
+      <code>api.audius.co</code>, which redirects to a content node operated by
+      Audius network participants. Your browser connects to those servers the
+      same way it would if you played the track on
+      <a href="https://audius.co" target="_blank" rel="noopener">audius.co</a> directly.
+    </li>
+    <li>
+      <strong>Album artwork</strong> — when displaying the currently playing
+      track, the extension fetches the cover image from the Audius network. The
+      waveform graphic shown in the popup is generated locally and involves no
+      network request.
     </li>
     <li>
       <strong>Donation link</strong> — if you click the donation button in the
@@ -275,9 +286,10 @@
     </li>
   </ul>
   <p>
-    SoundCloud's privacy practices are described in their own
-    <a href="https://soundcloud.com/pages/privacy" target="_blank" rel="noopener">SoundCloud Privacy Policy</a>.
-    We have no control over how SoundCloud handles connections from your browser.
+    Audius' privacy practices are described in their own
+    <a href="https://audius.co/legal/privacy-policy" target="_blank" rel="noopener">Audius Privacy Policy</a>.
+    We have no control over how Audius or its content nodes handle connections
+    from your browser.
   </p>
 
   <h2>4. Data we do not collect</h2>
@@ -313,12 +325,8 @@
       <td>To keep the service worker alive periodically so playback state stays in sync with the audio document</td>
     </tr>
     <tr>
-      <td><code>tabs</code></td>
-      <td>Used only to open the donation page when you click the donation button. Not used for reading or modifying any page content.</td>
-    </tr>
-    <tr>
-      <td><code>host: w.soundcloud.com</code><br><code>host: *.sndcdn.com</code></td>
-      <td>To load the SoundCloud Widget Player and stream audio from SoundCloud's CDN</td>
+      <td><code>host: api.audius.co</code></td>
+      <td>To fetch playlist data and stream audio from the Audius network</td>
     </tr>
     </tbody>
   </table>
